@@ -2,43 +2,35 @@
 SIPE
 Sistema Integrado de Planejamento Estratégico
 
-Modelo principal do Projeto Estratégico.
+Projeto Estratégico
 """
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field, asdict
 from datetime import datetime
-from typing import Any
 from uuid import uuid4
 
+from domain.models.company import Company
+from domain.models.canvas import Canvas
+from domain.models.pestel import Pestel
+from domain.models.porter import Porter
+from domain.models.swot import SWOT
+from domain.models.identity import Identity
+from domain.models.objective import Objective
+from domain.models.financial import Financial
 
-# ==========================================================
-# Projeto Estratégico
-# ==========================================================
 
 @dataclass
 class Project:
 
-    # ======================================================
+    # =====================================================
     # Metadados
-    # ======================================================
+    # =====================================================
 
     id: str = field(default_factory=lambda: str(uuid4()))
 
     version: str = "0.1.0"
-
-    created_at: str = field(
-        default_factory=lambda: datetime.now().isoformat()
-    )
-
-    updated_at: str = field(
-        default_factory=lambda: datetime.now().isoformat()
-    )
-
-    # ======================================================
-    # Informações Gerais
-    # ======================================================
 
     title: str = ""
 
@@ -50,133 +42,187 @@ class Project:
 
     responsible: str = ""
 
-    # ======================================================
-    # Empresa
-    # ======================================================
+    created_at: str = field(
+        default_factory=lambda: datetime.now().isoformat()
+    )
 
-    company: dict[str, Any] = field(default_factory=dict)
+    updated_at: str = field(
+        default_factory=lambda: datetime.now().isoformat()
+    )
 
-    # ======================================================
-    # Diagnóstico
-    # ======================================================
+    # =====================================================
+    # Modelos de Domínio
+    # =====================================================
 
-    canvas: dict[str, Any] = field(default_factory=dict)
+    company: Company = field(default_factory=Company)
 
-    pestel: dict[str, Any] = field(default_factory=dict)
+    canvas: Canvas = field(default_factory=Canvas)
 
-    porter: dict[str, Any] = field(default_factory=dict)
+    pestel: Pestel = field(default_factory=Pestel)
 
-    benchmarking: list = field(default_factory=list)
+    porter: Porter = field(default_factory=Porter)
 
-    swot: dict[str, Any] = field(default_factory=dict)
+    swot: SWOT = field(default_factory=SWOT)
 
-    swot_cross: dict[str, Any] = field(default_factory=dict)
+    identity: Identity = field(default_factory=Identity)
 
-    identity: dict[str, Any] = field(default_factory=dict)
+    objectives: list[Objective] = field(default_factory=list)
 
-    # ======================================================
-    # Planejamento
-    # ======================================================
+    financial: Financial = field(default_factory=Financial)
 
-    objectives: list = field(default_factory=list)
+    # =====================================================
+    # Controle
+    # =====================================================
 
-    kpis: list = field(default_factory=list)
+    attachments: list[str] = field(default_factory=list)
 
-    initiatives: list = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
 
-    action_plan: list = field(default_factory=list)
+    notes: str = ""
 
-    # ======================================================
-    # Gestão
-    # ======================================================
-
-    risks: list = field(default_factory=list)
-
-    financial: dict[str, Any] = field(default_factory=dict)
-
-    dashboard: dict[str, Any] = field(default_factory=dict)
-
-    reports: list = field(default_factory=list)
-
-    # ======================================================
+    # =====================================================
     # Métodos
-    # ======================================================
+    # =====================================================
 
-    def update_timestamp(self) -> None:
-        """
-        Atualiza a data de modificação.
-        """
+    def touch(self):
 
         self.updated_at = datetime.now().isoformat()
 
-    # ------------------------------------------------------
+    # -----------------------------------------------------
 
-    def to_dict(self) -> dict:
-        """
-        Converte o objeto para dicionário.
-        """
+    def validate(self):
+
+        return self.title.strip() != ""
+
+    # -----------------------------------------------------
+
+    def to_dict(self):
 
         return asdict(self)
 
-    # ------------------------------------------------------
+    # -----------------------------------------------------
 
     @classmethod
-    def from_dict(cls, data: dict) -> "Project":
-        """
-        Constrói um Project a partir de um dicionário.
-        """
+    def from_dict(cls, data):
 
-        return cls(**data)
+        obj = cls()
 
-    # ------------------------------------------------------
+        obj.id = data.get("id", obj.id)
+        obj.version = data.get("version", obj.version)
 
-    def touch(self):
-        """
-        Atualiza somente o timestamp.
-        """
+        obj.title = data.get("title", "")
+        obj.description = data.get("description", "")
+        obj.status = data.get("status", "Planejamento")
+        obj.planning_horizon = data.get("planning_horizon", 5)
+        obj.responsible = data.get("responsible", "")
 
-        self.update_timestamp()
+        obj.created_at = data.get(
+            "created_at",
+            obj.created_at,
+        )
 
-    # ------------------------------------------------------
+        obj.updated_at = data.get(
+            "updated_at",
+            obj.updated_at,
+        )
+
+        obj.company = Company.from_dict(
+            data.get("company", {})
+        )
+
+        obj.canvas = Canvas.from_dict(
+            data.get("canvas", {})
+        )
+
+        obj.pestel = Pestel.from_dict(
+            data.get("pestel", {})
+        )
+
+        obj.porter = Porter.from_dict(
+            data.get("porter", {})
+        )
+
+        obj.swot = SWOT.from_dict(
+            data.get("swot", {})
+        )
+
+        obj.identity = Identity.from_dict(
+            data.get("identity", {})
+        )
+
+        obj.objectives = [
+            Objective.from_dict(item)
+            for item in data.get("objectives", [])
+        ]
+
+        obj.financial = Financial.from_dict(
+            data.get("financial", {})
+        )
+
+        obj.attachments = data.get(
+            "attachments",
+            [],
+        )
+
+        obj.tags = data.get(
+            "tags",
+            [],
+        )
+
+        obj.notes = data.get(
+            "notes",
+            "",
+        )
+
+        return obj
+
+    # -----------------------------------------------------
+
+    def __str__(self):
+
+        return self.title
+
+    # -----------------------------------------------------
 
     @property
     def is_new(self):
 
         return self.title == ""
 
-    # ------------------------------------------------------
+    # -----------------------------------------------------
 
     @property
-    def filename(self):
+    def total_objectives(self):
 
-        if self.title.strip():
+        return len(self.objectives)
 
-            name = (
-                self.title
-                .lower()
-                .replace(" ", "_")
-                .replace("/", "_")
-                .replace("\\", "_")
-            )
+    # -----------------------------------------------------
 
-            return f"{name}.json"
+    @property
+    def total_kpis(self):
 
-        return f"{self.id}.json"
+        return sum(
+            len(obj.kpis)
+            for obj in self.objectives
+        )
 
-    # ------------------------------------------------------
+    # -----------------------------------------------------
 
-    def __str__(self):
+    @property
+    def total_initiatives(self):
 
-        return self.title
+        return sum(
+            len(obj.initiatives)
+            for obj in self.objectives
+        )
 
-    # ------------------------------------------------------
+    # -----------------------------------------------------
 
-    def summary(self):
+    @property
+    def total_actions(self):
 
-        return {
-            "id": self.id,
-            "title": self.title,
-            "status": self.status,
-            "version": self.version,
-            "updated_at": self.updated_at,
-        }
+        return sum(
+            len(init.actions)
+            for obj in self.objectives
+            for init in obj.initiatives
+        )
