@@ -80,7 +80,7 @@ class Application:
         if self.navigation.count() > 0:
             return
 
-        from sipe.ui.pages.home import HomePage
+        from ui.pages.home import HomePage
 
         self.navigation.register(
             NavigationItem(
