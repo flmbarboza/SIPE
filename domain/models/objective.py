@@ -11,7 +11,17 @@ from uuid import uuid4
 
 @dataclass
 class Objective:
+    from dataclasses import dataclass, field, asdict
+    from domain.models.kpi import KPI
+    from domain.models.initiative import Initiative
+    from domain.models.risk import Risk
 
+    kpis: list[KPI] = field(default_factory=list)
+    
+    initiatives: list[Initiative] = field(default_factory=list)
+    
+    risks: list[Risk] = field(default_factory=list)
+    
     id: str = field(default_factory=lambda: str(uuid4()))
 
     title: str = ""
