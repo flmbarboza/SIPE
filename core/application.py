@@ -15,8 +15,8 @@ import streamlit as st
 from config import settings
 from config.logging import app_logger
 from config.paths import create_directories
-from sipe.core.navigation import NavigationItem, navigation
-from sipe.core.session_manager import session
+from core.navigation import NavigationItem, navigation
+from core.session_manager import session
 
 
 class Application:
