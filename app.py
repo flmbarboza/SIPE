@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from config.settings import Settings
+from config.settings import settings
 from core.application import Application
 
 
