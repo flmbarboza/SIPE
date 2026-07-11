@@ -18,8 +18,8 @@ from core.application import Application
 # ==========================================================
 
 st.set_page_config(
-    page_title=settings.APP_NAME,
-    page_icon=settings.APP_ICON,
+    page_title=config.settings.APP_NAME,
+    page_icon=config.settings.APP_ICON,
     layout="wide",
     initial_sidebar_state="expanded",
 )
