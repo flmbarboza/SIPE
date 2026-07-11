@@ -17,8 +17,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Type
 
-from sipe.core.page import Page
-from sipe.core.session_manager import session
+from core.page import Page
+from core.session_manager import session
 
 
 # ============================================================
