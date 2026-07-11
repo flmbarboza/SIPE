@@ -19,8 +19,6 @@ class Settings:
 
     APP_FULL_NAME: str = "Sistema Integrado de Planejamento Estratégico"
 
-    APP_ICON: "📊"
-
     VERSION: str = "0.1.0"
 
     AUTHOR: str = "Flávio Luiz de Moraes Barboza"
