@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from config.settings import settings
+from config.settings import Settings
 from core.application import Application
 
 
@@ -18,8 +18,8 @@ from core.application import Application
 # ==========================================================
 
 st.set_page_config(
-    page_title=Settings.APP_NAME,
-    page_icon=Settings.APP_ICON,
+    page_title=settings.APP_NAME,
+    page_icon=settings.APP_ICON,
     layout="wide",
     initial_sidebar_state="expanded",
 )
