@@ -18,7 +18,7 @@ from abc import ABC, abstractmethod
 
 import streamlit as st
 
-from sipe.core.session_manager import session
+from core.session_manager import session
 from config.logging import app_logger
 
 
