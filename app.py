@@ -4,7 +4,7 @@ SIPE
 Ponto de entrada da aplicação.
 """
 
-from sipe.core.application import Application
+from SIPE.core.application import Application
 
 
 def main():
