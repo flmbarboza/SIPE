@@ -8,10 +8,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field, asdict
 from uuid import uuid4
 
-
 @dataclass
-class Initiative:
-
+class Initiative:    
+    from domain.models.action_plan import Action
+    actions: list[Action] = field(default_factory=list)
+    
     id: str = field(default_factory=lambda: str(uuid4()))
 
     objective_id: str = ""
