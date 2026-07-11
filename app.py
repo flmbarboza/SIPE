@@ -16,10 +16,10 @@ from core.application import Application
 # ==========================================================
 # Configuração da página
 # ==========================================================
-APP_ICON = "📊"
+
 st.set_page_config(
     page_title=settings.APP_NAME,
-    page_icon=APP_ICON,
+    page_icon=settings.APP_ICON,
     layout="wide",
     initial_sidebar_state="expanded",
 )
