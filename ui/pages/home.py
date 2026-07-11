@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import streamlit as st
 
-from sipe.core.page import Page
+from core.page import Page
 from config import settings
 
 
